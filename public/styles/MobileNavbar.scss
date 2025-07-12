@@ -1,0 +1,32 @@
+.mfooter-main{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .container{ 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+        gap: 17px;
+        button{
+            background-color: rgba(48, 44, 44, 0.466);
+            border: none;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+    }
+}
