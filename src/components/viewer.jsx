@@ -36,27 +36,15 @@ const Viewer = () => {
   const { currentImage, sceneRef, isLoadingImage } = useContext(AppContext);
 
   return (
-
     <div className='tsv-main'>
      {isLoadingImage && <PreLoader />}
-
       <Scene ref={sceneRef}>
-        
-
         {/* The 360-degree background image */}
         {currentImage && <a-sky src={currentImage.image}></a-sky>}
-
-        {/*
-                  THE FIX: THE CAMERA RIG
-                  We rotate the parent <Entity> (the "rig") instead of the camera itself.
-                  The camera's default controls will now work correctly without conflict.
-                */}
         <Entity auto-rotate-camera="speed: -4">
           <a-camera></a-camera>
         </Entity>
-
       </Scene>
-
     </div>
   );
 };

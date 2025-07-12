@@ -10,10 +10,10 @@ export const AppProvider = ({ children }) => {
         { id: 3, name: 'Entrance 1', image: '/360/new/entrance1.jpg', thumb: '/360/thumb/entrance1.jpg', cat: 'campus' },
         { id: 4, name: 'Entrance 2', image: '/360/new/entrance2.jpg', thumb: '/360/thumb/entrance2.jpg', cat: 'campus' },
         { id: 5, name: 'Garden', image: '/360/new/garden.jpg', thumb: '/360/thumb/garden.jpg', cat: 'campus' },
-        { id: 6, name: 'Gate 1', image: '/360/new/gate1.jpg', thumb: '/360/thumb/gate1.jpg', cat: 'campus',position:[11.914959, 79.634273] },
-        { id: 7, name: 'Gate 2', image: '/360/new/gate2.jpg', thumb: '/360/thumb/gate2.jpg', cat: 'campus',position:[11.914320, 79.634506] },
+        { id: 6, name: 'Gate 1', image: '/360/new/gate1.jpg', thumb: '/360/thumb/gate1.jpg', cat: 'campus', position: [11.914959, 79.634273] },
+        { id: 7, name: 'Gate 2', image: '/360/new/gate2.jpg', thumb: '/360/thumb/gate2.jpg', cat: 'campus', position: [11.914320, 79.634506] },
         { id: 8, name: 'tennis court', image: '/360/new/tennis.jpg', thumb: '/360/thumb/tennis.png', cat: 'facility' },
-        { id: 9, name: 'volley ball', image: '/360/new/volleyball.jpg', thumb: '/360/thumb/volleyball.png', cat: 'facility',position: [11.914043, 79.634704] },
+        { id: 9, name: 'volley ball', image: '/360/new/volleyball.jpg', thumb: '/360/thumb/volleyball.png', cat: 'facility', position: [11.914043, 79.634704] },
         { id: 10, name: 'Garden 2', image: '/360/new/garden1.jpg', thumb: '/360/thumb/garden1.jpg', cat: 'campus' },
         { id: 11, name: 'Computer science lab', image: '/360/lab/lab1.jpg', thumb: '/360/thumb/lab1.webp', cat: 'lab' },
         { id: 12, name: 'Physics lab', image: '/360/lab/lab2.jpg', thumb: '/360/thumb/lab2.webp', cat: 'lab' },
@@ -27,9 +27,9 @@ export const AppProvider = ({ children }) => {
     const [isLoadingImage, setIsLoadingImage] = useState(false); // New state for image loading
     const [isMobile, setIsMobile] = useState(false);
     const [inVRMode, setInVRMode] = useState(false);
-    const [showSearchBox,setShowSearchBox] = useState(false)
+    const [showSearchBox, setShowSearchBox] = useState(false)
     const sceneRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(true);
+    const [isVisible, setIsVisible] = useState(true);
 
 
     useEffect(() => {
@@ -72,6 +72,7 @@ export const AppProvider = ({ children }) => {
             window.removeEventListener('resize', checkIfMobile);
         };
     }, []);
+    console.log('isloading',isLoadingImage)
     const handleSelectImage = async (e) => {
         if (isMobile) {
             setIsLoadingImage(true);
@@ -137,16 +138,51 @@ export const AppProvider = ({ children }) => {
             img.onerror = (err) => reject(err);
         });
     };
-    useEffect(() => {
-        // Set initial image when component mounts
-        if (imageData.length > 0 && !currentImage) {
-            setCurrentImage(imageData[0]);
+    // useEffect(() => {
+    //     // Set initial image when component mounts
+    //     if (imageData.length > 0 && !currentImage) {
+    //         setCurrentImage(imageData[0]);
+    //     }
+    // }, [imageData, currentImage]);
+
+    useEffect(()=>{
+     const data = imageData[0]
+        const handleRenderImage = async (e) => {
+        if (isMobile) {
+            setIsLoadingImage(true);
+            try {
+                await preloadImage(e.image); 
+                setCurrentImage(e); 
+                
+            } catch (error) {
+                console.error("Failed to load image:", error);
+                // Handle error (e.g., show a fallback image or message)
+            } finally {
+                setTimeout(() => {
+                    setIsLoadingImage(false); // Hide loader regardless of success or failure
+
+                }, 1000);
+            }
+            return
         }
-    }, [imageData, currentImage]);
+        if (e.id === currentImage?.id) return; // Avoid re-loading the same image
 
-
+        setIsLoadingImage(true); // Show loader
+        try {
+            await preloadImage(e.image); // Preload the new image
+            setCurrentImage(e); // Set new image after preloading
+          
+        } catch (error) {
+            console.error("Failed to load image:", error);
+            // Handle error (e.g., show a fallback image or message)
+        } finally {
+            setIsLoadingImage(false); // Hide loader regardless of success or failure
+        }
+    };
+    handleRenderImage(data)
+    },[])
     return (
-        <AppContext.Provider value={{ imageData, isLoadingImage, setIsLoadingImage, filteredImage, setFliteredImage, currentImage, setCurrentImage, handleSelectImage, isMobile, setIsMobile,sceneRef,showSearchBox,setShowSearchBox,isVisible, setIsVisible }}>
+        <AppContext.Provider value={{ imageData, isLoadingImage, setIsLoadingImage, filteredImage, setFliteredImage, currentImage, setCurrentImage, handleSelectImage, isMobile, setIsMobile, sceneRef, showSearchBox, setShowSearchBox, isVisible, setIsVisible }}>
             {children}
         </AppContext.Provider>
     )
