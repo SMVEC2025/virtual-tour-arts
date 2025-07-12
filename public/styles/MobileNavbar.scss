@@ -1,4 +1,4 @@
-.mfooter-main{
+.mfooter-main {
     position: fixed;
     left: 0;
     bottom: 0;
@@ -10,24 +10,41 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    .container{ 
+
+    .container {
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: row;
         gap: 17px;
-        button{
-            background-color: rgba(48, 44, 44, 0.466);
+        background-color: #091652;
+        height: fit-content;
+
+        margin-bottom: 20px;
+        padding: 5px;
+        border-radius: 50px;
+
+        button {
+            background-color: rgba(12, 39, 88, 0);
             border: none;
             width: 40px;
             height: 40px;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: white;
+            color: rgb(233, 231, 231);
             border-radius: 50%;
-            margin-bottom: 20px;
+            font-size: 16px;
 
+            &:nth-child(1) {
+                background-color: rgb(221, 220, 220);
+                color: rgb(0, 0, 0);
+            }
+
+            &:nth-child(5) {
+                background-color: rgb(221, 220, 220);
+                color: rgb(0, 0, 0);
+            }
         }
     }
 }
