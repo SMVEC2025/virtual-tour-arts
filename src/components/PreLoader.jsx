@@ -2,24 +2,11 @@ import { useState, useEffect, useContext } from "react";
 import { motion } from "framer-motion";
 
 export default function PreLoader() {
-     const [isVisible, setIsVisible] = useState(true);
-    useEffect(() => {
-        // Set a timer to hide the preloader after 10 seconds
-        const timer = setTimeout(() => {
-            setIsVisible(false);
-        }, 2500);
-
-        // Clean up the timer when the component is unmounted
-        return () => clearTimeout(timer);
-    }, []);
-
-    if (!isVisible) return null;
-
+ 
     return (
         <>
             
 
-      {isVisible && 
               <div className="logo-entrance">
                    <svg width="226" height="221" viewBox="0 0 226 221" fill="none" xmlns="http://www.w3.org/2000/svg">
             <motion.path
@@ -139,7 +126,7 @@ export default function PreLoader() {
             
                    </div>
       
-      }
+      
         </>
     );
 }
