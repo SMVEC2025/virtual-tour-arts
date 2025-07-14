@@ -5,38 +5,22 @@ import { AppContext } from '../context/AppContext';
 import PreLoader from './PreLoader';
 
 const Viewer = () => {
-  const { currentImage, sceneRef, isLoadingImage, setIsLoadingImage, imageData, setCurrentImage, isMobile } = useContext(AppContext);
+  const {
+    currentImage,
+    sceneRef,
+    isLoadingImage,
+    setIsLoadingImage,
+    imageData,
+    setCurrentImage,
+    isMobile
+  } = useContext(AppContext);
+
   const [aframeReady, setAframeReady] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
+  // Register auto-rotate only once globally
   useEffect(() => {
-    // Set the initial image when imageData is available
-    if (imageData && imageData.length > 0 && !currentImage) {
-      try {
-        setCurrentImage(imageData[0]);
-      } catch (error) {
-        console.error("Error setting initial image:", error);
-        setTimeout(() => {
-          setIsLoadingImage(false);
-        }, 500);
-      }
-    }
-  }, [imageData, currentImage, setCurrentImage, setIsLoadingImage]); // Depend on imageData, currentImage, etc.
-
-  useEffect(() => {
-    const sceneEl = sceneRef.current?.el;
-
-    if (!sceneEl) return;
-
-    const handleSceneLoaded = () => {
-      console.log('A-Frame scene is loaded and ready!');
-      setAframeReady(true);
-    };
-
-    // Add event listener once
-    sceneEl.addEventListener('loaded', handleSceneLoaded);
-
-    // Register auto-rotate component only if not mobile
-    if (!isMobile && !AFRAME.components['auto-rotate-camera']) {
+    if (!AFRAME.components['auto-rotate-camera']) {
       AFRAME.registerComponent('auto-rotate-camera', {
         schema: {
           speed: { type: 'number', default: -4 },
@@ -56,44 +40,93 @@ const Viewer = () => {
           this.el.setAttribute('rotation', {
             x: rotation.x,
             y: newRotationY,
-            z: rotation.z
+            z: rotation.z,
           });
-        }
+        },
       });
+    }
+  }, []);
+
+  // Wait until <a-scene> fully loads
+  useEffect(() => {
+    const sceneEl = sceneRef.current?.el;
+    if (!sceneEl || isMobile) return;
+
+    const handleSceneLoaded = () => {
+      setAframeReady(true);
+    };
+
+    sceneEl.addEventListener('loaded', handleSceneLoaded);
+
+    return () => {
+      sceneEl.removeEventListener('loaded', handleSceneLoaded);
+    };
+  }, [sceneRef, isMobile]);
+
+  // Set first image when scene is ready
+  useEffect(() => {
+    if (aframeReady && imageData.length > 0 && !currentImage) {
+      setIsLoadingImage(true);
+      setCurrentImage(imageData[0]);
+    }
+  }, [aframeReady, imageData, currentImage]);
+
+  // Track current image load
+  useEffect(() => {
+    if (!currentImage) return;
+
+    const imgEl = document.getElementById(`img-${currentImage.id}`);
+    if (!imgEl) return;
+
+    const handleImgLoad = () => {
+      setImageLoaded(true);
+      setIsLoadingImage(false);
+    };
+
+    if (imgEl.complete) {
+      handleImgLoad();
+    } else {
+      imgEl.addEventListener('load', handleImgLoad);
     }
 
     return () => {
-      // Clean up event listener
-      sceneEl.removeEventListener('loaded', handleSceneLoaded);
+      imgEl?.removeEventListener('load', handleImgLoad);
     };
-  }, [isMobile]); // Re-run if isMobile changes
+  }, [currentImage]);
 
   return (
-    <div className='tsv-main'>
+    <div className="tsv-main">
       {isLoadingImage && <PreLoader />}
 
-      <Scene ref={sceneRef} vr-mode-ui="enabled: true">
-        <a-assets timeout="30000">
-          {imageData.map((data) => (
-            <img key={data.id} id={`img-${data.id}`} src={data.image} alt={data.name} crossOrigin="anonymous" />
-          ))}
-        </a-assets>
+      {isMobile ? (
+        <Scene ref={sceneRef}>
+          {currentImage && <a-sky src={currentImage.image}></a-sky>}
+          <a-camera user-was-moved="true"></a-camera>
+        </Scene>
+      ) : (
+        <Scene ref={sceneRef} vr-mode-ui="enabled: true" embedded>
+          <a-assets timeout="30000">
+            {imageData.map((data) => (
+              <img
+                key={data.id}
+                id={`img-${data.id}`}
+                src={data.image}
+                alt={data.name}
+                crossOrigin="anonymous"
+              />
+            ))}
+          </a-assets>
 
-        {aframeReady && currentImage && (
-          <a-sky src={`#img-${currentImage.id}`}></a-sky>
-        )}
-
-        {/* Conditionally render auto-rotate camera */}
-        {!isMobile ? (
-          <Entity auto-rotate-camera="speed: -4">
-            <a-camera></a-camera>
-          </Entity>
-        ) : (
-          <Entity>
-            <a-camera></a-camera>
-          </Entity>
-        )}
-      </Scene>
+          {aframeReady && imageLoaded && currentImage && (
+            <>
+              <a-sky src={`#img-${currentImage.id}`} rotation="0 -130 0"></a-sky>
+              <Entity auto-rotate-camera="speed: -4">
+                <a-camera></a-camera>
+              </Entity>
+            </>
+          )}
+        </Scene>
+      )}
     </div>
   );
 };

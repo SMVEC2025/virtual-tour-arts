@@ -16,3 +16,11 @@
   font-family: "Roboto", sans-serif;
   font-optical-sizing: auto;
 }
+body {
+  background-color: #000; /* Or any color you prefer, e.g., a dark grey or matching your PreLoader */
+}
+
+/* Optional: If A-Frame's canvas has a default background that peeks through */
+.a-canvas {
+  background-color: #000 !important; /* Use !important if necessary to override A-Frame defaults */
+}

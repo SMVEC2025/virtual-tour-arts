@@ -32,11 +32,10 @@ function MobileFooter() {
     }
 
     const handleEnterVR = () => {
-        const sceneEl = sceneRef.current.el;
-        if (sceneEl && sceneEl.enterVR) {
-            sceneEl.enterVR(); // This triggers VR mode
-        } else {
-            console.warn('VR not supported or scene not ready.');
+        try {
+          sceneRef.current.el.enterVR()  
+        } catch (error) {
+            console.log(error)
         }
     };
     const handlePopupClick = (e) => {
