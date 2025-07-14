@@ -24,3 +24,7 @@ body {
 .a-canvas {
   background-color: #000 !important; /* Use !important if necessary to override A-Frame defaults */
 }
+
+.a-loader-title{
+    display: none !important;
+}

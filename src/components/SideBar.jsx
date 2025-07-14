@@ -4,6 +4,7 @@ import { MdDragIndicator } from "react-icons/md";
 import { RiExpandHorizontalSLine } from "react-icons/ri";
 import { LuArrowLeft } from "react-icons/lu";
 import { IoMdClose } from "react-icons/io";
+import { GrGallery } from "react-icons/gr";
 
 function SideBar() {
     const sidebarRef = useRef(null);
@@ -64,7 +65,9 @@ function SideBar() {
 
     return (
         <div className={`sidebar-god ${entered ? 'active' : ''}`} onMouseEnter={() => { setEntered(true) }} >
-
+            <div className='side-btn'>
+                <GrGallery/>
+            </div>
             <div
                 onClick={(e) => e.stopPropagation()}
                 ref={sidebarRef}
@@ -89,8 +92,8 @@ function SideBar() {
                     </div>
                 </div>
                 <div className="main-content">
-                    {imageData?.map((image) => (
-                        <div className='container'
+                    {imageData?.map((image,index) => (
+                        <div key={index} className='container'
                             style={{ backgroundImage: `url(${image.thumb})` }}
                             onClick={() => { handleSelectImage(image)}}>
                             <div className='layer'>

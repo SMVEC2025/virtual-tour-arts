@@ -6,6 +6,7 @@ import Viewer from './viewer';
 import SearchBox from './SearchBox';
 import NavBar from './NavBar';
 import PreLoader from './PreLoader'; // PreLoader is for initial loading, keep it loaded
+import MobileViewer from './MobileViewer';
 
 // Lazy load components that might not be needed on initial render or for all users/devices
 const LazySideBar = lazy(() => import('./SideBar'));
@@ -24,23 +25,26 @@ function Home() {
         <div className='home-main'>
             <SearchBox />
             <NavBar />
-            <Viewer />
+            {isLoadingImage && <PreLoader />}
+            <Suspense fallback={<div>Loading viewer...</div>}>
+                {isMobile ? <MobileViewer /> : <Viewer />}
+            </Suspense>
 
             {!isMobile && (
                 <Suspense fallback={<div>Loading desktop features...</div>}>
                     <LazySideBar />
                     <LazyInteractiveMap />
-                    <LazyFooter /> 
+                    <LazyFooter />
                 </Suspense>
             )}
 
             {isMobile && (
                 <Suspense fallback={<div>Loading mobile features...</div>}>
-                    <LazyMobileFooter /> 
+                    <LazyMobileFooter />
                 </Suspense>
             )}
 
-       
+
         </div>
     );
 }

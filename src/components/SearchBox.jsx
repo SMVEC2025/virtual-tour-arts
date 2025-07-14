@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { IoSearchSharp } from "react-icons/io5";
 import { AppContext } from '../context/AppContext';
 
@@ -6,6 +6,7 @@ function SearchBox() {
     const [inputValue, setInputValue] = useState('')
     const { imageData, setCurrentImage,showSearchBox,setShowSearchBox } = useContext(AppContext)
     const [searchResults, setSearchResults] = useState([])
+    const inputRef = useRef()
 
     const handleSearch = (value) => {
         if (value.trim() === '') {
@@ -29,11 +30,18 @@ function SearchBox() {
         setInputValue('')
         setSearchResults([])
     }
+     const handlePopupClick = (e) => {
+        e.stopPropagation(); // Prevent overlay click from closing popup
+    };
+    useEffect(() => {
+        inputRef?.current?.focus()
+    },[showSearchBox])
+
     if(showSearchBox){
         return (
-        <div className='search-main'>
-            <div className='container'>
-                <input type="text" placeholder='Search' value={inputValue} onChange={handleChange} />
+        <div className='search-main' onClick={()=>{setShowSearchBox(false)}}>
+            <div className='container' onClick={handlePopupClick}>
+                <input type="text" placeholder='Search' value={inputValue} onChange={handleChange} ref={inputRef} />
                 <div className='search-icon'><IoSearchSharp /></div>
                 <div className='search-results-container'> {/* Added a container for results */}
                     {searchResults.length > 0 ? (

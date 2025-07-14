@@ -72,7 +72,6 @@ export const AppProvider = ({ children }) => {
             window.removeEventListener('resize', checkIfMobile);
         };
     }, []);
-    console.log('isloading', isLoadingImage)
     const handleSelectImage = async (e) => {
         if (isMobile) {
             setIsLoadingImage(true);
@@ -159,7 +158,6 @@ export const AppProvider = ({ children }) => {
     }, [])
 
     function handelRightClick(e) {
-        console.log(currentImage.id, imageData.length)
         if (currentImage?.id < imageData?.length) {
             const filtering = imageData.filter(obj => obj.id === currentImage.id + 1);
             handleSelectImage(filtering[0])
@@ -168,7 +166,6 @@ export const AppProvider = ({ children }) => {
         }
     }
     function handelLeftClick(e) {
-        console.log(currentImage.id, imageData.length)
         if (currentImage?.id > 1) {
             const filtering = imageData.filter(obj => obj.id === currentImage.id - 1);
             handleSelectImage(filtering[0])
