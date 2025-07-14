@@ -53,11 +53,16 @@ const Viewer = () => {
   // }, []);
 
   useEffect(() => {
-    if (aframeReady && imageData.length > 0 && !currentImage) {
-      setCurrentImage(imageData[0]);
-      setIsLoadingImage(false);
-    }
-  }, [aframeReady, imageData, currentImage, setCurrentImage, setIsLoadingImage]);
+       try {
+        setCurrentImage(imageData[0]);
+       } catch (error) {
+        setTimeout(() => {
+          setIsLoadingImage(false);
+        }, 500);
+       }
+      
+    
+  }, []);
 
 
   return (

@@ -79,19 +79,7 @@ export const AppProvider = ({ children }) => {
             try {
                 await preloadImage(e.image); // Preload the new image
                 setCurrentImage(e); // Set new image after preloading
-                const index = filteredImage.findIndex(obj => obj.id === e.id);
-                // Logic for suggesting images
-                if (index > -1) {
-                    const suggestions = [];
-                    for (let i = 1; i <= 3; i++) {
-                        if (index + i < filteredImage.length) {
-                            suggestions.push(filteredImage[index + i]);
-                        }
-                    }
-                    // setSuggestingImage(suggestions);
-                } else {
-                    // setSuggestingImage([]);
-                }
+                
             } catch (error) {
                 console.error("Failed to load image:", error);
                 // Handle error (e.g., show a fallback image or message)
@@ -109,19 +97,7 @@ export const AppProvider = ({ children }) => {
         try {
             await preloadImage(e.image); // Preload the new image
             setCurrentImage(e); // Set new image after preloading
-            const index = filteredImage.findIndex(obj => obj.id === e.id);
-            // Logic for suggesting images
-            if (index > -1) {
-                const suggestions = [];
-                for (let i = 1; i <= 3; i++) {
-                    if (index + i < filteredImage.length) {
-                        suggestions.push(filteredImage[index + i]);
-                    }
-                }
-                // setSuggestingImage(suggestions);
-            } else {
-                // setSuggestingImage([]);
-            }
+            
         } catch (error) {
             console.error("Failed to load image:", error);
             // Handle error (e.g., show a fallback image or message)
