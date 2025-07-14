@@ -80,11 +80,11 @@ const Viewer = () => {
         //   </Entity>
         // </Scene> */}
       <Scene ref={sceneRef}>
-        <a-assets timeout="30000">
+        {/* <a-assets timeout="30000">
           {imageData.map((data) => (
             <img key={data.id} id={`img-${data.id}`} src={data.image} alt={data.name} crossOrigin="anonymous" />
           ))}
-        </a-assets>
+        </a-assets> */}
         {currentImage && <a-sky src={currentImage.image}></a-sky>}
         <a-camera user-was-moved="true"></a-camera>
       </Scene>
