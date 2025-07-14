@@ -8,49 +8,49 @@ const Viewer = () => {
   const { currentImage, sceneRef, isLoadingImage, setIsLoadingImage, imageData, setCurrentImage, isMobile } = useContext(AppContext);
   const [aframeReady, setAframeReady] = useState(false);
 
-  useEffect(() => {
-    const sceneEl = sceneRef.current?.el;
+  // useEffect(() => {
+  //   const sceneEl = sceneRef.current?.el;
 
-    if (!sceneEl) return;
+  //   if (!sceneEl) return;
 
-    const handleSceneLoaded = () => {
-      console.log('A-Frame scene is loaded and ready!');
-      setAframeReady(true);
+  //   const handleSceneLoaded = () => {
+  //     console.log('A-Frame scene is loaded and ready!');
+  //     setAframeReady(true);
 
-      if (!AFRAME.components['auto-rotate-camera']) {
-        AFRAME.registerComponent('auto-rotate-camera', {
-          schema: {
-            speed: { type: 'number', default: -4 },
-            enabled: { type: 'boolean', default: true },
-          },
-          init: function () {
-            const stopRotation = () => {
-              this.data.enabled = false;
-            };
-            this.el.sceneEl.addEventListener('mousedown', stopRotation);
-            this.el.sceneEl.addEventListener('touchstart', stopRotation);
-          },
-          tick: function (time, delta) {
-            if (!this.data.enabled) return;
-            const rotation = this.el.getAttribute('rotation');
-            const newRotationY = rotation.y + (this.data.speed * (delta / 1000));
-            this.el.setAttribute('rotation', {
-              x: rotation.x,
-              y: newRotationY,
-              z: rotation.z
-            });
-          }
-        });
-      }
+  //     if (!AFRAME.components['auto-rotate-camera']) {
+  //       AFRAME.registerComponent('auto-rotate-camera', {
+  //         schema: {
+  //           speed: { type: 'number', default: -4 },
+  //           enabled: { type: 'boolean', default: true },
+  //         },
+  //         init: function () {
+  //           const stopRotation = () => {
+  //             this.data.enabled = false;
+  //           };
+  //           this.el.sceneEl.addEventListener('mousedown', stopRotation);
+  //           this.el.sceneEl.addEventListener('touchstart', stopRotation);
+  //         },
+  //         tick: function (time, delta) {
+  //           if (!this.data.enabled) return;
+  //           const rotation = this.el.getAttribute('rotation');
+  //           const newRotationY = rotation.y + (this.data.speed * (delta / 1000));
+  //           this.el.setAttribute('rotation', {
+  //             x: rotation.x,
+  //             y: newRotationY,
+  //             z: rotation.z
+  //           });
+  //         }
+  //       });
+  //     }
 
-    };
+  //   };
 
-    if (!isMobile) { sceneEl.addEventListener('loaded', handleSceneLoaded); }
+  //   if (!isMobile) { sceneEl.addEventListener('loaded', handleSceneLoaded); }
 
-    return () => {
-      if (!isMobile) { sceneEl.addEventListener('loaded', handleSceneLoaded); }
-    };
-  }, []);
+  //   return () => {
+  //     if (!isMobile) { sceneEl.addEventListener('loaded', handleSceneLoaded); }
+  //   };
+  // }, []);
 
   useEffect(() => {
     if (aframeReady && imageData.length > 0 && !currentImage) {
