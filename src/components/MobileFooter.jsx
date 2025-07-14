@@ -32,7 +32,7 @@ function MobileFooter() {
     }
 
     const handleEnterVR = () => {
-        const sceneEl = sceneRef.current;
+        const sceneEl = sceneRef.current.el;
         if (sceneEl && sceneEl.enterVR) {
             sceneEl.enterVR(); // This triggers VR mode
         } else {
