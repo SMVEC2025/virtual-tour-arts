@@ -9,10 +9,10 @@ import MobileMap from './MobileMap';
 
 function MobileFooter() {
     const [expandFooter, setExpandFooter] = useState(false);
-    const { imageData } = useContext(AppContext)
+    const { imageData,handleSelectImage,handelRightClick,handelLeftClick } = useContext(AppContext)
     const [showcontent, setShowContent] = useState('');
     function handleGalleryClick(val) {
-       if(expandFooter){
+       if(showcontent == val){
          setExpandFooter(false)
         setShowContent('')
        }else{
@@ -20,13 +20,24 @@ function MobileFooter() {
         setShowContent(val)
        }
     }
-    console.log(imageData)
+
+    function handleNavigation(val){
+        setExpandFooter(false)
+        if(val == 'left'){
+            handelLeftClick()
+        }
+        if(val == 'right'){
+            handelRightClick()
+        }
+    }
+    
+   
     return (
         <div className={`mfooter-main ${expandFooter ? "expanded" : ""} `}>
             {showcontent == 'gallery' && (
                 <div className='image-items'>
                     {imageData?.map((image, index) =>
-                        <div className='con'>
+                        <div className='con' onClick={() => handleSelectImage(image)}>
                             <img src={image.thumb} alt="" />
                         </div>
                     )}
@@ -39,11 +50,11 @@ function MobileFooter() {
                 </div>
             )}
             <div className={`container`}>
-                <button><FaAngleLeft /></button>
-                <button><FaVrCardboard /></button>
+                <button  onClick={()=>{handleNavigation('left')}}><FaAngleLeft /></button>
+                <button ><FaVrCardboard /></button>
                 <button onClick={()=>{handleGalleryClick('map')}}><GrMapLocation /></button>
                 <button onClick={()=>{handleGalleryClick('gallery')}}><TfiGallery /></button>
-                <button><FaAngleRight /></button>
+                <button onClick={()=>{handleNavigation('right')}}><FaAngleRight /></button>
             </div>
         </div>
     )

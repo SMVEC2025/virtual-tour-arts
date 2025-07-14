@@ -72,7 +72,7 @@ export const AppProvider = ({ children }) => {
             window.removeEventListener('resize', checkIfMobile);
         };
     }, []);
-    console.log('isloading',isLoadingImage)
+    console.log('isloading', isLoadingImage)
     const handleSelectImage = async (e) => {
         if (isMobile) {
             setIsLoadingImage(true);
@@ -145,44 +145,63 @@ export const AppProvider = ({ children }) => {
     //     }
     // }, [imageData, currentImage]);
 
-    useEffect(()=>{
-     const data = imageData[0]
+    useEffect(() => {
+        const data = imageData[0]
         const handleRenderImage = async (e) => {
-        if (isMobile) {
-            setIsLoadingImage(true);
+            if (isMobile) {
+                setIsLoadingImage(true);
+                try {
+                    await preloadImage(e.image);
+                    setCurrentImage(e);
+
+                } catch (error) {
+                    console.error("Failed to load image:", error);
+                    // Handle error (e.g., show a fallback image or message)
+                } finally {
+                    setTimeout(() => {
+                        setIsLoadingImage(false); // Hide loader regardless of success or failure
+
+                    }, 1000);
+                }
+                return
+            }
+            if (e.id === currentImage?.id) return; // Avoid re-loading the same image
+
+            setIsLoadingImage(true); // Show loader
             try {
-                await preloadImage(e.image); 
-                setCurrentImage(e); 
-                
+                await preloadImage(e.image); // Preload the new image
+                setCurrentImage(e); // Set new image after preloading
+
             } catch (error) {
                 console.error("Failed to load image:", error);
                 // Handle error (e.g., show a fallback image or message)
             } finally {
-                setTimeout(() => {
-                    setIsLoadingImage(false); // Hide loader regardless of success or failure
-
-                }, 1000);
+                setIsLoadingImage(false); // Hide loader regardless of success or failure
             }
+        };
+        handleRenderImage(data)
+    }, [])
+
+    function handelRightClick(e) {
+        console.log(currentImage.id, imageData.length)
+        if (currentImage?.id < imageData?.length) {
+            const filtering = imageData.filter(obj => obj.id === currentImage.id + 1);
+            setCurrentImage(filtering[0])
+        } else {
             return
         }
-        if (e.id === currentImage?.id) return; // Avoid re-loading the same image
-
-        setIsLoadingImage(true); // Show loader
-        try {
-            await preloadImage(e.image); // Preload the new image
-            setCurrentImage(e); // Set new image after preloading
-          
-        } catch (error) {
-            console.error("Failed to load image:", error);
-            // Handle error (e.g., show a fallback image or message)
-        } finally {
-            setIsLoadingImage(false); // Hide loader regardless of success or failure
+    }
+    function handelLeftClick(e) {
+        console.log(currentImage.id, imageData.length)
+        if (currentImage?.id > 1) {
+            const filtering = imageData.filter(obj => obj.id === currentImage.id - 1);
+            setCurrentImage(filtering[0])
+        } else {
+            return
         }
-    };
-    handleRenderImage(data)
-    },[])
+    }
     return (
-        <AppContext.Provider value={{ imageData, isLoadingImage, setIsLoadingImage, filteredImage, setFliteredImage, currentImage, setCurrentImage, handleSelectImage, isMobile, setIsMobile, sceneRef, showSearchBox, setShowSearchBox, isVisible, setIsVisible }}>
+        <AppContext.Provider value={{ handelLeftClick,handelRightClick, imageData, isLoadingImage, setIsLoadingImage, filteredImage, setFliteredImage, currentImage, setCurrentImage, handleSelectImage, isMobile, setIsMobile, sceneRef, showSearchBox, setShowSearchBox, isVisible, setIsVisible }}>
             {children}
         </AppContext.Provider>
     )

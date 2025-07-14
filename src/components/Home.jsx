@@ -10,16 +10,18 @@ import { AppContext } from '../context/AppContext'
 import MobileFooter from './MobileFooter'
 
 function Home() {
-    const{ isMobile } = useContext(AppContext)
+    const { isMobile } = useContext(AppContext)
     return (
         <div className='home-main'>
-            <SearchBox/>
+            <SearchBox />
             <NavBar />
             <Viewer />
-            <SideBar />
+
+            {!isMobile && <SideBar />}
+
             {!isMobile && <InteractiveMap />}
-            
-            {isMobile?(<MobileFooter/>):(<Footer/>)}
+
+            {isMobile ? (<MobileFooter />) : (<Footer />)}
         </div>
     )
 }

@@ -22,8 +22,11 @@
         // animation: expand 0.6s ease forwards;
         height: 60vh;
         border-radius: 30px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
         width: 90vw;
         gap: 10px;
+        justify-content: space-between;
 
         .container {
             justify-content: space-between;
@@ -86,7 +89,7 @@
     }
 }
 
-.image-items{
+.image-items {
     width: 100%;
     display: flex;
     justify-content: center;
@@ -94,14 +97,15 @@
     flex-wrap: wrap;
     flex: 1;
     flex-direction: row;
-    max-height: calc(60vh - 80px);
+    max-height: calc(60vh - 50px);
     overflow: auto;
 
-    .con{
+    .con {
         width: calc(50% - 10px);
         padding: 2px;
         height: 100px;
-        img{
+
+        img {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -111,12 +115,12 @@
 }
 
 
-.mobile-map{
+.mobile-map {
     width: 95%;
     height: calc(60vh - 60px);
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 25px 25px 0 0;
+    border-radius: 10px 10px 0 0;
     overflow: hidden;
 }
