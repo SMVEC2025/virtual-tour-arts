@@ -8,91 +8,91 @@ const Viewer = () => {
   const { currentImage, sceneRef, isLoadingImage, setIsLoadingImage, imageData, setCurrentImage, isMobile } = useContext(AppContext);
   const [aframeReady, setAframeReady] = useState(false);
 
-  // useEffect(() => {
-  //   const sceneEl = sceneRef.current?.el;
+  useEffect(() => {
+    const sceneEl = sceneRef.current?.el;
 
-  //   if (!sceneEl) return;
+    if (!sceneEl) return;
 
-  //   const handleSceneLoaded = () => {
-  //     console.log('A-Frame scene is loaded and ready!');
-  //     setAframeReady(true);
+    const handleSceneLoaded = () => {
+      console.log('A-Frame scene is loaded and ready!');
+      setAframeReady(true);
 
-  //     if (!AFRAME.components['auto-rotate-camera']) {
-  //       AFRAME.registerComponent('auto-rotate-camera', {
-  //         schema: {
-  //           speed: { type: 'number', default: -4 },
-  //           enabled: { type: 'boolean', default: true },
-  //         },
-  //         init: function () {
-  //           const stopRotation = () => {
-  //             this.data.enabled = false;
-  //           };
-  //           this.el.sceneEl.addEventListener('mousedown', stopRotation);
-  //           this.el.sceneEl.addEventListener('touchstart', stopRotation);
-  //         },
-  //         tick: function (time, delta) {
-  //           if (!this.data.enabled) return;
-  //           const rotation = this.el.getAttribute('rotation');
-  //           const newRotationY = rotation.y + (this.data.speed * (delta / 1000));
-  //           this.el.setAttribute('rotation', {
-  //             x: rotation.x,
-  //             y: newRotationY,
-  //             z: rotation.z
-  //           });
-  //         }
-  //       });
-  //     }
+      if (!AFRAME.components['auto-rotate-camera']) {
+        AFRAME.registerComponent('auto-rotate-camera', {
+          schema: {
+            speed: { type: 'number', default: -4 },
+            enabled: { type: 'boolean', default: true },
+          },
+          init: function () {
+            const stopRotation = () => {
+              this.data.enabled = false;
+            };
+            this.el.sceneEl.addEventListener('mousedown', stopRotation);
+            this.el.sceneEl.addEventListener('touchstart', stopRotation);
+          },
+          tick: function (time, delta) {
+            if (!this.data.enabled) return;
+            const rotation = this.el.getAttribute('rotation');
+            const newRotationY = rotation.y + (this.data.speed * (delta / 1000));
+            this.el.setAttribute('rotation', {
+              x: rotation.x,
+              y: newRotationY,
+              z: rotation.z
+            });
+          }
+        });
+      }
 
-  //   };
+    };
 
-  //   if (!isMobile) { sceneEl.addEventListener('loaded', handleSceneLoaded); }
+    if (!isMobile) { sceneEl.addEventListener('loaded', handleSceneLoaded); }
 
-  //   return () => {
-  //     if (!isMobile) { sceneEl.addEventListener('loaded', handleSceneLoaded); }
-  //   };
-  // }, []);
+    return () => {
+      if (!isMobile) { sceneEl.addEventListener('loaded', handleSceneLoaded); }
+    };
+  }, []);
 
   useEffect(() => {
-       try {
-        setCurrentImage(imageData[0]);
-       } catch (error) {
-        setTimeout(() => {
-          setIsLoadingImage(false);
-        }, 500);
-       }
-      
-    
+    try {
+      setCurrentImage(imageData[0]);
+    } catch (error) {
+      setTimeout(() => {
+        setIsLoadingImage(false);
+      }, 500);
+    }
+
+
   }, []);
 
 
   return (
     <div className='tsv-main'>
       {isLoadingImage && <PreLoader />}
-      {/*      
-        // <Scene ref={sceneRef} vr-mode-ui="enabled: true">
 
-        //   <a-assets timeout="30000">
-        //     {imageData.map((data) => (
-        //       <img key={data.id} id={`img-${data.id}`} src={data.image} alt={data.name} crossOrigin="anonymous" />
-        //     ))}
-        //   </a-assets>
-        //   {aframeReady && currentImage && (
-        //     <a-sky src={`#img-${currentImage.id}`}></a-sky>
-        //   )}
+      <Scene ref={sceneRef} vr-mode-ui="enabled: true">
 
-        //   <Entity auto-rotate-camera="speed: -4">
-        //     <a-camera></a-camera>
-        //   </Entity>
-        // </Scene> */}
-      <Scene ref={sceneRef}>
-        {/* <a-assets timeout="30000">
+        <a-assets timeout="30000">
           {imageData.map((data) => (
             <img key={data.id} id={`img-${data.id}`} src={data.image} alt={data.name} crossOrigin="anonymous" />
           ))}
-        </a-assets> */}
+        </a-assets>
+        {aframeReady && currentImage && (
+          <a-sky src={`#img-${currentImage.id}`}></a-sky>
+        )}
+
+        <Entity auto-rotate-camera="speed: -4">
+          <a-camera></a-camera>
+        </Entity>
+      </Scene>
+      {/* <Scene ref={sceneRef}>
+        <a-assets timeout="30000">
+          {imageData.map((data) => (
+            <img key={data.id} id={`img-${data.id}`} src={data.image} alt={data.name} crossOrigin="anonymous" />
+          ))}
+        </a-assets>
         {currentImage && <a-sky src={currentImage.image}></a-sky>}
         <a-camera user-was-moved="true"></a-camera>
-      </Scene>
+      </Scene> */}
 
 
     </div>

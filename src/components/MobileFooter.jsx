@@ -51,7 +51,6 @@ function MobileFooter() {
             <div className={`mfooter-main ${expandFooter ? "expanded" : ""} `} onClick={handlePopupClick}>
                 {showcontent == 'gallery' && (
                     <div className='image-items'>
-                        <input type="text" />
                         {imageData?.map((image, index) =>
                             <div className='con' onClick={() => handleSelectImage(image)}>
                                 <img src={image.thumb} alt="" />

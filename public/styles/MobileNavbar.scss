@@ -100,22 +100,8 @@
     max-height: calc(60vh - 50px);
     overflow: auto;
     position: relative;
-    padding-top: 42px;
-    input{
-        position: absolute;
-        left: 10px;
-        top: 0;
-        width: calc(100% - 20px);
-        height: 35px;
-        z-index: 1000;
-        background-color: rgba(26, 33, 65, 0.521);
-         outline: none;
-        border: 1px solid rgba(128, 128, 128, 0.575);
-        border-radius: 3px;
-        color: rgba(255, 255, 255, 0.904);
-        padding-left: 5px;
-        letter-spacing: 0.3px;
-    }
+    
+  
 
     .con {
         width: calc(50% - 10px);

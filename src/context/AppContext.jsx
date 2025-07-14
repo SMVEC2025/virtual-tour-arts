@@ -162,7 +162,7 @@ export const AppProvider = ({ children }) => {
         console.log(currentImage.id, imageData.length)
         if (currentImage?.id < imageData?.length) {
             const filtering = imageData.filter(obj => obj.id === currentImage.id + 1);
-            setCurrentImage(filtering[0])
+            handleSelectImage(filtering[0])
         } else {
             return
         }
@@ -171,7 +171,7 @@ export const AppProvider = ({ children }) => {
         console.log(currentImage.id, imageData.length)
         if (currentImage?.id > 1) {
             const filtering = imageData.filter(obj => obj.id === currentImage.id - 1);
-            setCurrentImage(filtering[0])
+            handleSelectImage(filtering[0])
         } else {
             return
         }
