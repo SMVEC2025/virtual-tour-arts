@@ -608,3 +608,34 @@
 
     }
 }
+
+.navigation-keys{
+    position: fixed;
+    right: 10px;
+    top: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 100;
+    transform: translateY(-50%);
+    
+    button{
+        width: 50px;
+        height: 50px;
+        border: none;
+        border-radius: 50%;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.26);
+        backdrop-filter: blur(3px);
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        scale: 0.9;
+        transition: all 0.2s ease;
+        &:hover{
+            background-color: rgba(0, 0, 0, 0.575);
+            scale: 1.1;
+        }
+    }
+}

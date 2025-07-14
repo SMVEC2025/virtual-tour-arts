@@ -5,14 +5,14 @@ export const AppContext = createContext();
 export const AppProvider = ({ children }) => {
 
     const imageData = [
-        { id: 1, name: 'SMVEC SAS', image: '/360/new/artsentrance.webp', thumb: '/360/thumb/artsentrance.jpg', cat: 'campus' },
+        { id: 1, name: 'SMVEC SAS', image: '/360/new/artsentrance.webp', thumb: '/360/thumb/artsentrance.jpg', cat: 'campus',position:[11.914924, 79.635205] },
         { id: 2, name: 'Canteen', image: '/360/new/canteen.webp', thumb: '/360/thumb/canteen.png', cat: 'facility' },
         { id: 3, name: 'Entrance 1', image: '/360/new/entrance1.webp', thumb: '/360/thumb/entrance1.jpg', cat: 'campus' },
         { id: 4, name: 'Entrance 2', image: '/360/new/entrance2.webp', thumb: '/360/thumb/entrance2.jpg', cat: 'campus' },
-        { id: 5, name: 'Garden', image: '/360/new/garden.webp', thumb: '/360/thumb/garden.jpg', cat: 'campus' },
+        { id: 5, name: 'Garden', image: '/360/new/garden.webp', thumb: '/360/thumb/garden.jpg', cat: 'campus',position:[11.914647, 79.635749] },
         { id: 6, name: 'Gate 1', image: '/360/new/gate1.webp', thumb: '/360/thumb/gate1.jpg', cat: 'campus', position: [11.914959, 79.634273] },
         { id: 7, name: 'Gate 2', image: '/360/new/gate2.webp', thumb: '/360/thumb/gate2.jpg', cat: 'campus', position: [11.914320, 79.634506] },
-        { id: 8, name: 'tennis court', image: '/360/new/tennis.webp', thumb: '/360/thumb/tennis.webp', cat: 'facility' },
+        { id: 8, name: 'tennis court', image: '/360/new/tennis.webp', thumb: '/360/thumb/tennis.webp', cat: 'facility',position:[11.914035, 79.634889] },
         { id: 9, name: 'volley ball', image: '/360/new/volleyball.webp', thumb: '/360/thumb/volleyball.webp', cat: 'facility', position: [11.914043, 79.634704] },
         { id: 10, name: 'Garden 2', image: '/360/new/garden1.webp', thumb: '/360/thumb/garden1.jpg', cat: 'campus' },
         { id: 11, name: 'Computer science lab', image: '/360/lab/lab1.webp', thumb: '/360/thumb/lab1.webp', cat: 'lab' },
