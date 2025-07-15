@@ -25,14 +25,14 @@ const InteractiveMap = () => {
     const [isFullScreen, setIsFullScreen] = useState(false);
     const [selectedMarker, setSelectedMarker] = useState(null);
     const [isLarge, setIsLarge] = useState(false);
-    const {imageData,handleSelectImage} = useContext(AppContext)
+    const { imageData, handleSelectImage } = useContext(AppContext)
 
 
-    const markers = imageData?.filter((e)=> e.position)
+    const markers = imageData?.filter((e) => e.position)
 
     const handleClick = (marker) => {
         handleSelectImage(marker);
-        
+
     };
 
     return (
@@ -60,6 +60,12 @@ const InteractiveMap = () => {
                             position={marker.position}
                             eventHandlers={{
                                 click: () => handleClick(marker),
+                                mouseover: (e) => {
+                                    e.target.openPopup();
+                                },
+                                mouseout: (e) => {
+                                    e.target.closePopup();
+                                }
                             }}
                         >
                             <Popup>{marker.name}</Popup>

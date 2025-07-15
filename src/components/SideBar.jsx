@@ -19,10 +19,12 @@ function SideBar() {
     useEffect(() => {
         const handleMouseMove = (e) => {
             if (!isResizing) return;
-            const newWidth = e.clientX;
+            const newWidth = e.clientX + 10;
             if (newWidth > 310 && newWidth < 920) {
                 setWidth(newWidth);
             }
+          
+         
         };
 
         const handleMouseUp = () => {
