@@ -3,7 +3,7 @@ import 'aframe'; // Ensure A-Frame is imported first
 import { Scene, Entity } from 'aframe-react';
 import { AppContext } from '../context/AppContext';
 import PreLoader from './PreLoader';
-import { FaArrowRight,FaArrowLeft } from "react-icons/fa6";
+import { FaArrowRight, FaArrowLeft } from "react-icons/fa6";
 
 if (typeof window !== 'undefined' && window.AFRAME && !AFRAME.components['auto-rotate-camera']) {
   AFRAME.registerComponent('auto-rotate-camera', {
@@ -35,16 +35,20 @@ if (typeof window !== 'undefined' && window.AFRAME && !AFRAME.components['auto-r
         z: rotation.z
       });
     },
-    remove: function() {
-  
+    remove: function () {
+
     }
   });
 }
 
 
 const Viewer = () => {
-  const { currentImage, sceneRef, isLoadingImage, setIsLoadingImage, imageData, setCurrentImage, isMobile,handelRightClick,handelLeftClick } = useContext(AppContext);
+  const { currentImage, sceneRef, isLoadingImage, setIsLoadingImage, imageData, setCurrentImage, isMobile, handelRightClick, handelLeftClick } = useContext(AppContext);
   const [aframeReady, setAframeReady] = useState(false);
+  const [suggestTxt, setSuggestTxt] = useState({
+    next: '',
+    prev: ''
+  });
 
   // useEffect to set the initial image
   useEffect(() => {
@@ -62,16 +66,16 @@ const Viewer = () => {
 
 
   useEffect(() => {
-    const sceneEl = sceneRef.current?.el; 
+    const sceneEl = sceneRef.current?.el;
 
     if (!sceneEl) {
-        console.warn("A-Frame scene element not found yet.");
-        return;
+      console.warn("A-Frame scene element not found yet.");
+      return;
     }
 
     const handleSceneLoaded = () => {
       setAframeReady(true);
-      setIsLoadingImage(false); 
+      setIsLoadingImage(false);
     };
 
     sceneEl.addEventListener('loaded', handleSceneLoaded);
@@ -81,28 +85,43 @@ const Viewer = () => {
         sceneEl.removeEventListener('loaded', handleSceneLoaded);
       }
     };
-  }, []); 
+  }, []);
 
   useEffect(() => {
     if (currentImage) {
-      setIsLoadingImage(true); 
-     
+      setIsLoadingImage(true);
+
       const timer = setTimeout(() => {
-        
-          setIsLoadingImage(false);
-      }, 500); 
+
+        setIsLoadingImage(false);
+      }, 500);
 
       return () => clearTimeout(timer);
     }
   }, [currentImage, setIsLoadingImage]);
 
- 
+  useEffect(() => {
+    const Next = imageData.filter(obj => obj.id === currentImage?.id + 1);
+    const Prev = imageData.filter(obj => obj.id === currentImage?.id - 1);
+    setSuggestTxt({
+      next: Next[0]?.name,
+      prev: Prev[0]?.name
+    });
+  }, [currentImage])
   return (
     <div className='tsv-main'>
       {isLoadingImage && <PreLoader />}
       <div className='navigation-keys'>
-        <button onClick={handelLeftClick}><FaArrowLeft/></button>
-        <button onClick={handelRightClick}><FaArrowRight/></button>
+        <div className='btn-con'>
+          <p>{suggestTxt?.prev}</p>
+
+          <button onClick={handelLeftClick}><FaArrowLeft /></button>
+        </div>
+        <div className='btn-con'>
+          <p>{suggestTxt?.next}</p>
+
+          <button onClick={handelRightClick}><FaArrowRight /></button>
+        </div>
       </div>
       <Scene ref={sceneRef} vr-mode-ui="enabled: true">
         <a-assets timeout="30000">
